@@ -27,3 +27,13 @@
 *.exe
 *.out
 *.app
+
+# My Own
+*.vscode/
+*GRADE
+*.err
+*.diff
+*.stderr
+*.stdout
+TIMEOUT
+reachability
