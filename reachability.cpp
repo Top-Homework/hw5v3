@@ -1,8 +1,10 @@
+#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <limits>
 #include <string>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -55,6 +57,7 @@ istream& ignoreline(ifstream& in, ifstream::pos_type& pos)
 
 int getsize(ifstream& in) {
     ifstream::pos_type pos = in.tellg();
+	ifstream::pos_type first = in.tellg();
 
     ifstream::pos_type lastPos;
     while (in >> ws && ignoreline(in, lastPos)) {
@@ -66,6 +69,7 @@ int getsize(ifstream& in) {
     string line;
     getline(in, line, ' ');
 	int size = stoi(line);
+	in.seekg(first);
     return size;
 }
 
@@ -77,16 +81,45 @@ int main(int argc, char *argv[]) {
     // ArgumentManager am(argc, argv);
     // string filename = am.get("E");
     // int source = stoi(am.get("source"));
-    // ifstream ifs(filename, ios::in);
+    // ifstream ifs;
+    // ifs.open(filename);
+    // ofstream temp;
+    // temp.open("temp.txt");
 
     // Used for debugging on Visual Studio
-    ifstream ifs("1.txt", ios::in);
+    string filename = ("1.txt");
+    ifstream ifs;
+    ifs.open(filename);
+    ofstream temp;
+    temp.open("temp.txt");
     int source = 2;
 
 	int size = 0;
 	if (ifs) {
 		size = getsize(ifs);
 	}
+
+    // The result of the read is placed in here
+    // In C++, we use a vector like an array but vectors can dynamically grow
+    // as required when we get more data.
+    vector<vector<int>> data;
+    string line;
+    // Read one line at a time into the variable line:
+    while (getline(ifs, line)) {
+        vector<int> lineData;
+        stringstream lineStream(line);
+        int value;
+        // Read an integer at a time from the line
+        while (lineStream >> value) {
+            // Add the integers from a line to a 1D array (vector)
+            lineData.push_back(value);
+        }
+        // When all the integers have been read, add the 1D array
+        // into a 2D array (as one line in the 2D array)
+        data.push_back(lineData);
+    }
+	ifs.close();
+    cout << data[1][1] << endl;
 
     Graph g(size);
     g.addEdge(0, 1);
@@ -97,7 +130,7 @@ int main(int argc, char *argv[]) {
     g.addEdge(3, 3);
 
     cout << "Following is Breadth First Traversal "
-         << "(starting from vertex 2) \n";
+            << "(starting from vertex 2) \n";
     g.BFS(2);
     cout << endl;
 	getchar();
