@@ -119,6 +119,7 @@ int main(int argc, char *argv[]) {
         data.push_back(lineData);
     }
 	ifs.close();
+	data.erase(data.end() - 1); //Deletes last line of vector
     cout << data[1][1] << endl;
 
     Graph g(size);
