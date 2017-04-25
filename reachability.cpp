@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
     ifs.open(filename);
     ofstream temp;
     temp.open("temp.txt");
-    int source = 2;
+    int source = 1;
 
 	int size = 0;
 	if (ifs) {
@@ -119,20 +119,19 @@ int main(int argc, char *argv[]) {
         data.push_back(lineData);
     }
 	ifs.close();
-	data.erase(data.end() - 1); //Deletes last line of vector
-    cout << data[1][1] << endl;
+	// data.erase(data.end() - 1); //Deletes last line of vector
 
-    Graph g(size);
-    g.addEdge(0, 1);
-    g.addEdge(0, 2);
-    g.addEdge(1, 2);
-    g.addEdge(2, 0);
-    g.addEdge(2, 3);
-    g.addEdge(3, 3);
+    Graph g(size + 1);
 
-    cout << "Following is Breadth First Traversal "
-            << "(starting from vertex 2) \n";
-    g.BFS(2);
+	for (int i = 0; i < data.size() - 1; i++) {
+		g.addEdge(data[i][0], data[i][1]);
+		cout << "\t" << data[i][0] << " " << data[i][1] << endl;
+	}
+	cout << endl;
+
+    cout << "\tFollowing is Breadth First Traversal "
+            << "(starting from vertex n) \n";
+    g.BFS(source);
     cout << endl;
 	getchar();
 
