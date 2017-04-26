@@ -5,39 +5,54 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <list>
 
 using namespace std;
 
 class Graph {
-    int V;
-    vector<int> *adj;
+    int V; // Number of vertices
+    list<int> *adj; // Pointer to an array containing adjacency lists
 
   public:
     Graph(int V) {
         this->V = V;
-        adj = new vector<int>[ V ];
+        adj = new list<int>[ V ];
     }
 
-    void addEdge(unsigned int v, int w) {
-        adj[v].push_back(w);
+	~Graph() {
+		delete[] adj;
+		adj = nullptr;
+	}
+
+    void addEdge(int v, int w) {
+        adj[v].push_back(w); // Add w to v's list
     }
 
     void BFS(int s) {
+		// Marks all vertices as not visited
         bool *visited = new bool[V];
         for (int i = 0; i < V; i++) {
             visited[i] = false;
         }
-        vector<int> queue;
 
+		// Creates a queue for BFS
+        list<int> queue;
+
+		// Martk the current node as visited and push it to list
         visited[s] = true;
         queue.push_back(s);
 
-        vector<int>::iterator i = queue.begin();
+		// 'i' will be used to get all adjacent vertices of a vertex
+		list<int>::iterator i;
 
         while (!queue.empty()) {
+			// Print vertex and pop from front of list
             s = queue.front();
             cout << s << " ";
-            queue.erase(queue.begin());
+			queue.pop_front();
+
+			// Get all adjacent vertices of the popped vertex s
+			// If an adjacent has not been visited then mark it as visited and push it to the list
             for (i = adj[s].begin(); i != adj[s].end(); ++i) {
                 if (!visited[*i]) {
                     visited[*i] = true;
@@ -48,30 +63,6 @@ class Graph {
     }
 
 };
-
-istream& ignoreline(ifstream& in, ifstream::pos_type& pos)
-{
-	pos = in.tellg();
-	return in.ignore(numeric_limits<streamsize>::max(), '\n');
-}
-
-int getsize(ifstream& in) {
-    ifstream::pos_type pos = in.tellg();
-	ifstream::pos_type first = in.tellg();
-
-    ifstream::pos_type lastPos;
-    while (in >> ws && ignoreline(in, lastPos)) {
-        pos = lastPos;
-    }
-    in.clear();
-    in.seekg(pos);
-
-    string line;
-    getline(in, line, ' ');
-	int size = stoi(line);
-	in.seekg(first);
-    return size;
-}
 
 int main(int argc, char *argv[]) {
     // if(argc < 2) {
@@ -87,17 +78,10 @@ int main(int argc, char *argv[]) {
     // temp.open("temp.txt");
 
     // Used for debugging on Visual Studio
-    string filename = ("1.txt");
+    string filename = ("5.txt");
     ifstream ifs;
     ifs.open(filename);
-    ofstream temp;
-    temp.open("temp.txt");
-    int source = 1;
-
-	int size = 0;
-	if (ifs) {
-		size = getsize(ifs);
-	}
+    int source = 2;
 
     // The result of the read is placed in here
     // In C++, we use a vector like an array but vectors can dynamically grow
@@ -119,9 +103,11 @@ int main(int argc, char *argv[]) {
         data.push_back(lineData);
     }
 	ifs.close();
-	// data.erase(data.end() - 1); //Deletes last line of vector
+	int size = 0;
+	size = data.back().at(0); // Retrieves size from last elemnt
+	data.pop_back(); //Deletes last line of vector
 
-    Graph g(size + 1);
+    Graph g(size);
 
 	for (int i = 0; i < data.size() - 1; i++) {
 		g.addEdge(data[i][0], data[i][1]);
