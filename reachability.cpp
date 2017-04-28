@@ -1,7 +1,5 @@
-#include <cstdio>
 #include <iostream>
 #include <fstream>
-#include <limits>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -21,7 +19,7 @@ class Graph
 	// Constructor
 	Graph(int V, int source) {
 		this->V = V;
-		adj = new list<int>[ V + 1 ];
+		adj = new list<int>[ V + 1 ]; // Needed to add one more due this list being zero indexed. For example, if there are 8 nodes then the size of the list is 8 but since it is zero indexed the last element is at index 7. Need for it to be index 8.
 		this->source = source;
 	}
 
@@ -34,7 +32,7 @@ class Graph
 	void BFS(int s) {
 		// Mark all the vertices as not visited
 		bool *visited = new bool[V + 1];
-		for (int i = 0; i <= V; i++)
+		for (int i = 0; i <= V; i++) // i <= V due to V being zero indexed
 			visited[i] = false;
 
 		// Create a queue for BFS
