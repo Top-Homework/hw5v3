@@ -57,13 +57,14 @@ void Graph::BFS(int s)
 	// 'i' will be used to get all adjacent vertices of a vertex
 	list<int>::iterator i;
 
+	list<int> vertices;
 	while (!queue.empty())
 	{
-
 		// Dequeue a vertex from queue and print it
 		s = queue.front();
 		if (s != source) {
-			cout << s << " ";
+			vertices.push_back(s);
+			//cout << s << " ";
 		}
 		queue.pop_front();
 
@@ -79,25 +80,28 @@ void Graph::BFS(int s)
 			}
 		}
 	}
-	delete[] visited;
+	vertices.sort();
+	for (list<int>::iterator it = vertices.begin(); it != vertices.end(); it++) {
+		cout << *it << " ";
+	}
 }
 
 int main(int argc, char *argv[]) {
-    // if(argc < 2) {
-    //     //cerr("Usage: reachability \"E=input.txt;source=num\"\n");
-    //     return 1;
-    // }
-    // ArgumentManager am(argc, argv);
-    // string filename = am.get("E");
-    // int source = stoi(am.get("source"));
-    // ifstream ifs;
-    // ifs.open(filename);
-
-    // Used for debugging on Visual Studio
-    string filename = ("4.txt");
+    if(argc < 2) {
+        //cerr("Usage: reachability \"E=input.txt;source=num\"\n");
+        return 1;
+    }
+    ArgumentManager am(argc, argv);
+    string filename = am.get("E");
+    int source = stoi(am.get("source"));
     ifstream ifs;
     ifs.open(filename);
-    int source = 1;
+
+    // Used for debugging on Visual Studio
+    // string filename = ("4.txt");
+    // ifstream ifs;
+    // ifs.open(filename);
+    // int source = 1;
 
     // The result of the read is placed in here
     // In C++, we use a vector like an array but vectors can dynamically grow
@@ -134,6 +138,6 @@ int main(int argc, char *argv[]) {
     // cout << "\tFollowing is Breadth First Traversal (starting from vertex n) \n";
     g.BFS(source);
     // cout << endl;
-	getchar();
+	// getchar();
     return 0;
 }
