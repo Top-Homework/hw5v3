@@ -68,6 +68,7 @@ class Graph
 			}
 		}
 
+		// Sort the list in ascending order
 		vertices.sort();
 		for (list<int>::iterator it = vertices.begin(); it != vertices.end(); it++) {
 			cout << *it << " ";
