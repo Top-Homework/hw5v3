@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <list>
+#include "ArgumentManager.h"
 
 using namespace std;
 
@@ -58,6 +59,7 @@ void Graph::BFS(int s)
 
 	while (!queue.empty())
 	{
+
 		// Dequeue a vertex from queue and print it
 		s = queue.front();
 		if (s != source) {
@@ -90,8 +92,6 @@ int main(int argc, char *argv[]) {
     // int source = stoi(am.get("source"));
     // ifstream ifs;
     // ifs.open(filename);
-    // ofstream temp;
-    // temp.open("temp.txt");
 
     // Used for debugging on Visual Studio
     string filename = ("4.txt");
@@ -131,9 +131,9 @@ int main(int argc, char *argv[]) {
 	}
 	// cout << endl;
 
-    cout << "\tFollowing is Breadth First Traversal (starting from vertex n) \n";
+    // cout << "\tFollowing is Breadth First Traversal (starting from vertex n) \n";
     g.BFS(source);
     // cout << endl;
-	// getchar();
+	getchar();
     return 0;
 }
